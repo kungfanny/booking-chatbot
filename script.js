@@ -1,8 +1,51 @@
+// ========================
+// Position & Style Control
+// ========================
+document.addEventListener("DOMContentLoaded", function () {
+  const chatContainer = document.getElementById("chat-container");
+  const chatToggle = document.getElementById("chat-toggle");
+
+  // Style for chat container
+  if (chatContainer) {
+    chatContainer.style.position = "fixed";
+    chatContainer.style.bottom = "20px";
+    chatContainer.style.right = "20px";
+    chatContainer.style.width = "350px";
+    chatContainer.style.height = "500px";
+    chatContainer.style.maxHeight = "80vh";
+    chatContainer.style.borderRadius = "10px";
+    chatContainer.style.zIndex = "999999";
+    chatContainer.style.boxShadow = "0 4px 12px rgba(0,0,0,0.2)";
+    chatContainer.style.background = "#fff";
+    chatContainer.style.overflow = "hidden";
+    chatContainer.style.flexDirection = "column";
+  }
+
+  // Style for toggle button
+  if (chatToggle) {
+    chatToggle.style.position = "fixed";
+    chatToggle.style.bottom = "20px";
+    chatToggle.style.right = "20px";
+    chatToggle.style.width = "50px";
+    chatToggle.style.height = "50px";
+    chatToggle.style.borderRadius = "50%";
+    chatToggle.style.background = "#007bff";
+    chatToggle.style.color = "#fff";
+    chatToggle.style.display = "flex";
+    chatToggle.style.alignItems = "center";
+    chatToggle.style.justifyContent = "center";
+    chatToggle.style.cursor = "pointer";
+    chatToggle.style.zIndex = "1000000";
+    chatToggle.style.fontSize = "22px";
+  }
+});
+
+// ========================
 // Popup toggle functionality
+// ========================
 const chatToggle = document.getElementById("chat-toggle");
 const chatContainer = document.getElementById("chat-container");
 
-// Show chat on toggle click, hide toggle button
 chatToggle.addEventListener("click", () => {
   chatContainer.style.display = "flex";
   chatToggle.style.display = "none";
@@ -27,14 +70,13 @@ closeBtn.addEventListener("click", () => {
 chatContainer.style.position = "relative"; // for close button position
 chatContainer.appendChild(closeBtn);
 
-// Start with chat hidden, toggle visible
+// Start with chat hidden
 chatContainer.style.display = "none";
 chatToggle.style.display = "flex";
 
 // ========================
 // EmailJS Setup
 // ========================
-// Replace these with your own EmailJS info
 const EMAILJS_SERVICE_ID = "service_j792hfh";
 const EMAILJS_TEMPLATE_ID = "template_rglszxa";
 const EMAILJS_PUBLIC_KEY = "3xzHlGmEjHmgV45am";
@@ -241,7 +283,7 @@ function showSummary() {
 }
 
 // ========================
-// Send Email or Test Mode
+// Send Email
 // ========================
 function sendEmail() {
   console.log("sendEmail() called with:", answers);
@@ -291,7 +333,7 @@ function sendEmail() {
 }
 
 // ========================
-// Initialization
+// Input Handling
 // ========================
 sendBtn.addEventListener("click", () => {
   const input = userInput.value.trim();
@@ -300,7 +342,7 @@ sendBtn.addEventListener("click", () => {
   nextStep(input);
 });
 
-// Start the conversation
+// Start conversation
 botMessage(
   "Hi! What type of event are you planning? (Wedding / Private Party / Restaurant / Bar)"
 );
