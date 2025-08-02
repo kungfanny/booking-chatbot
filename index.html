@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Booking Chatbot</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div id="chat-container">
+      <div id="chat-window"></div>
+      <input
+        type="text"
+        id="user-input"
+        placeholder="Type your answer..."
+        autocomplete="off"
+      />
+      <button id="send-btn">Send</button>
+    </div>
+
+    <!-- ✅ Load EmailJS first -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+    <!-- ✅ Your bot script -->
+    <script src="script.js"></script>
+  </body>
+</html>
