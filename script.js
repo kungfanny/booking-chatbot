@@ -21,26 +21,6 @@ window.addEventListener("DOMContentLoaded", () => {
    }
  });
 
- // Close button inside chat (optional, add to HTML or create dynamically if you want)
- // If you want a close button inside the chat, uncomment this and add it dynamically
- /*
- const closeBtn = document.createElement("button");
- closeBtn.innerText = "×";
- closeBtn.style.position = "absolute";
- closeBtn.style.top = "5px";
- closeBtn.style.right = "10px";
- closeBtn.style.background = "transparent";
- closeBtn.style.border = "none";
- closeBtn.style.fontSize = "24px";
- closeBtn.style.cursor = "pointer";
- closeBtn.addEventListener("click", () => {
-   chatContainer.style.display = "none";
-   chatToggle.style.display = "flex";
- });
- chatContainer.style.position = "relative";
- chatContainer.appendChild(closeBtn);
- */
-
  // EmailJS setup
  const EMAILJS_SERVICE_ID = "service_j792hfh"; // Your actual service ID
  const EMAILJS_TEMPLATE_ID = "template_rglszxa"; // Your actual template ID
@@ -93,6 +73,9 @@ window.addEventListener("DOMContentLoaded", () => {
 
  // Helper: add bot message bubble
  function botMessage(msg) {
+   userInput.style.display = "block";
+   sendBtn.style.display = "inline-block";
+
    const el = document.createElement("div");
    el.classList.add("message", "bot");
    el.innerText = msg;
@@ -105,6 +88,47 @@ window.addEventListener("DOMContentLoaded", () => {
    const el = document.createElement("div");
    el.classList.add("message", "user");
    el.innerText = msg;
+   chatWindow.appendChild(el);
+   chatWindow.scrollTop = chatWindow.scrollHeight;
+ }
+
+ // Helper: add bot message bubble with buttons
+ function botMessageWithButtons(msg, buttons) {
+   userInput.style.display = "none";
+   sendBtn.style.display = "none";
+
+   const el = document.createElement("div");
+   el.classList.add("message", "bot");
+   el.innerText = msg;
+
+   const btnContainer = document.createElement("div");
+   btnContainer.style.marginTop = "8px";
+
+   buttons.forEach((btnText) => {
+     const btn = document.createElement("button");
+     btn.textContent = btnText;
+     btn.style.marginRight = "8px";
+     btn.style.padding = "6px 12px";
+     btn.style.borderRadius = "5px";
+     btn.style.border = "none";
+     btn.style.cursor = "pointer";
+     btn.style.fontWeight = "bold";
+     btn.style.backgroundColor = "#EBDFA3"; // your brand color
+     btn.style.color = "#333";
+
+     btn.addEventListener("click", () => {
+       btnContainer.remove();
+       el.innerText = msg; // reset msg text (remove buttons)
+       userInput.style.display = "block";
+       sendBtn.style.display = "inline-block";
+
+       nextStep(btnText);
+     });
+
+     btnContainer.appendChild(btn);
+   });
+
+   el.appendChild(btnContainer);
    chatWindow.appendChild(el);
    chatWindow.scrollTop = chatWindow.scrollHeight;
  }
@@ -136,7 +160,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
      if (addon.sizeQuestion && input.toLowerCase() === "yes") {
        step = 2;
-       botMessage("How many guests will attend? (Up to 50 / 50–200)");
+       botMessageWithButtons("How many guests will attend?", ["Up to 50 persons", "50-200 persons"]);
        return;
      }
 
@@ -152,6 +176,7 @@ window.addEventListener("DOMContentLoaded", () => {
      answers.soundSystemSize = input;
      addonIndex++;
      step = 1;
+
      if (addonIndex < currentAddons.length) {
        botMessage(currentAddons[addonIndex].question);
      } else {
