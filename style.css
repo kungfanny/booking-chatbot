@@ -1,23 +1,28 @@
-/* Popup Chatbot Styles */
+/* =======================
+  Chat Container
+  ======================= */
 #chat-container {
   position: fixed;
   bottom: 20px;
   right: 20px;
   width: 350px;
   max-width: 90vw;
-  height: 400px;
-  background: white;
+  height: 500px;
+  max-height: 80vh;
+  background: #fff;
   border: 1px solid #ccc;
   border-radius: 10px;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-  display: flex;
+  display: none; /* Hidden until toggle is clicked */
   flex-direction: column;
   z-index: 9999;
   font-family: Arial, sans-serif;
-  display: none; /* start hidden */
-  position: fixed;
+  overflow: hidden;
 }
 
+/* =======================
+   Chat Window (messages)
+   ======================= */
 #chat-window {
   flex-grow: 1;
   overflow-y: auto;
@@ -25,19 +30,21 @@
   border-bottom: 1px solid #ddd;
 }
 
+/* =======================
+   Input Area
+   ======================= */
 #user-input {
   border: 1px solid #ccc;
   padding: 10px;
-  width: calc(100% - 90px);
+  flex: 1;
   border-radius: 5px;
-  margin: 10px 10px 10px 0;
   font-size: 14px;
   outline: none;
+  box-sizing: border-box;
 }
 
 #send-btn {
   width: 70px;
-  margin: 10px 10px 10px 0;
   border: none;
   background-color: #4caf50;
   color: white;
@@ -46,7 +53,9 @@
   font-weight: bold;
 }
 
-/* Toggle button */
+/* =======================
+   Toggle Button
+   ======================= */
 #chat-toggle {
   position: fixed;
   bottom: 20px;
@@ -62,16 +71,43 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-#chatbot {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  width: 350px;
-  height: 500px;
-  max-height: 80vh;
-  border-radius: 10px;
-  z-index: 999999;
-  box-shadow: 0 4px 12px rgba(0,0,0,0,2);
+/* =======================
+   Messages
+   ======================= */
+.message {
+  padding: 8px 10px;
+  border-radius: 6px;
+  margin-bottom: 8px;
+  max-width: 85%;
+}
+
+.message.bot {
+  background: #f1f1f1;
+  align-self: flex-start;
+}
+
+.message.user {
+  background: #4caf50;
+  color: white;
+  align-self: flex-end;
+}
+
+/* =======================
+   Mobile Friendly
+   ======================= */
+@media (max-width: 600px) {
+  #chat-container {
+    width: 90%;
+    height: 80%;
+    bottom: 10px;
+    right: 5%;
+  }
+
+  #chat-toggle {
+    bottom: 10px;
+    right: 10px;
+  }
 }
