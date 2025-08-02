@@ -1,39 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Booking Chatbot</title>
+<head>
+ <meta charset="UTF-8" />
+ <meta name="viewport" content="width=device-width, initial-scale=1" />
+ <title>Booking Chatbot</title>
+ <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+ <div id="chat-container">
+   <div id="chat-window"></div>
+   <div id="chat-input-area">
+     <input
+       type="text"
+       id="user-input"
+       placeholder="Type your answer..."
+       autocomplete="off"
+     />
+     <button id="send-btn">Send</button>
+   </div>
+ </div>
 
-    <!-- Link your CSS -->
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  <body>
-    <!-- 💬 Toggle button for opening chat -->
-    <div id="chat-toggle">💬</div>
+ <!-- Toggle Button -->
+ <div id="chat-toggle">💬</div>
 
-    <!-- Chat container -->
-    <div id="chat-container">
-      <!-- Chat messages -->
-      <div id="chat-window"></div>
+ <!-- EmailJS -->
+ <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 
-      <!-- User input -->
-      <div style="display: flex; border-top: 1px solid #ccc">
-        <input
-          type="text"
-          id="user-input"
-          placeholder="Type your answer..."
-          autocomplete="off"
-          style="flex: 1; padding: 8px; border: none"
-        />
-        <button id="send-btn" style="padding: 8px 12px">Send</button>
-      </div>
-    </div>
-
-    <!-- ✅ Load EmailJS first -->
-    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-
-    <!-- ✅ Your bot script -->
-    <script src="script.js"></script>
-  </body>
+ <!-- Your chatbot script -->
+ <script src="script.js"></script>
+</body>
 </html>
