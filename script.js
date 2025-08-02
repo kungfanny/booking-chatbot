@@ -1,20 +1,50 @@
+// Popup toggle functionality
+const chatToggle = document.getElementById("chat-toggle");
+const chatContainer = document.getElementById("chat-container");
+
+// Show chat on toggle click, hide toggle button
+chatToggle.addEventListener("click", () => {
+  chatContainer.style.display = "flex";
+  chatToggle.style.display = "none";
+});
+
+// Create and add close button inside chat
+const closeBtn = document.createElement("button");
+closeBtn.innerText = "×";
+closeBtn.style.position = "absolute";
+closeBtn.style.top = "5px";
+closeBtn.style.right = "10px";
+closeBtn.style.background = "transparent";
+closeBtn.style.border = "none";
+closeBtn.style.fontSize = "24px";
+closeBtn.style.cursor = "pointer";
+
+closeBtn.addEventListener("click", () => {
+  chatContainer.style.display = "none";
+  chatToggle.style.display = "flex";
+});
+
+chatContainer.style.position = "relative"; // for close button position
+chatContainer.appendChild(closeBtn);
+
+// Start with chat hidden, toggle visible
+chatContainer.style.display = "none";
+chatToggle.style.display = "flex";
+
+// ========================
 // EmailJS Setup
 // ========================
+// Replace these with your own EmailJS info
 const EMAILJS_SERVICE_ID = "service_j792hfh";
 const EMAILJS_TEMPLATE_ID = "template_rglszxa";
 const EMAILJS_PUBLIC_KEY = "3xzHlGmEjHmgV45am";
 
-// ✅ Initialize EmailJS when the page loads
-(function () {
-  emailjs.init(EMAILJS_PUBLIC_KEY);
-})();
-
 // ========================
 // Chatbot Variables
 // ========================
-const chatWindow = document.getElementById("chat-window");
-const userInput = document.getElementById("user-input");
-const sendBtn = document.getElementById("send-btn");
+let chatWindow = document.getElementById("chat-window");
+let userInput = document.getElementById("user-input");
+let sendBtn = document.getElementById("send-btn");
 
 let step = 0;
 let eventType = "";
@@ -86,37 +116,18 @@ const eventAddons = {
 };
 
 // ========================
-// Chat Message Functions with button support
+// Chat Message Functions
 // ========================
-function botMessage(msg, buttons = []) {
-  const el = document.createElement("div");
+function botMessage(msg) {
+  let el = document.createElement("div");
   el.classList.add("message", "bot");
   el.innerText = msg;
   chatWindow.appendChild(el);
-
-  if (buttons.length > 0) {
-    const buttonsContainer = document.createElement("div");
-    buttonsContainer.classList.add("buttons-container");
-
-    buttons.forEach((buttonText) => {
-      const btn = document.createElement("button");
-      btn.classList.add("option-btn");
-      btn.innerText = buttonText;
-      btn.addEventListener("click", () => {
-        nextStep(buttonText);
-        buttonsContainer.remove();
-      });
-      buttonsContainer.appendChild(btn);
-    });
-
-    chatWindow.appendChild(buttonsContainer);
-  }
-
   chatWindow.scrollTop = chatWindow.scrollHeight;
 }
 
 function userMessage(msg) {
-  const el = document.createElement("div");
+  let el = document.createElement("div");
   el.classList.add("message", "user");
   el.innerText = msg;
   chatWindow.appendChild(el);
@@ -130,37 +141,31 @@ let currentAddons = [];
 let addonIndex = 0;
 
 function nextStep(input) {
-  input = input.trim();
-
   if (step === 0) {
     userMessage(input);
     eventType = input;
     if (!eventAddons[eventType]) {
-      botMessage("Please choose:", [
-        "Wedding",
-        "Private Party",
-        "Restaurant / Bar",
-      ]);
+      botMessage("Please choose: Wedding / Private Party / Restaurant / Bar");
       return;
     }
     currentAddons = eventAddons[eventType];
     addonIndex = 0;
     step++;
-    askAddonQuestion();
+    botMessage(currentAddons[addonIndex].question);
   } else if (step === 1) {
     userMessage(input);
-    const addon = currentAddons[addonIndex];
+    let addon = currentAddons[addonIndex];
     answers[addon.var] = input;
 
     if (addon.sizeQuestion && input.toLowerCase() === "yes") {
       step = 2;
-      botMessage("How many guests will attend?", ["Up to 50", "50–200"]);
+      botMessage("How many guests will attend? (Up to 50 / 50–200)");
       return;
     }
 
     addonIndex++;
     if (addonIndex < currentAddons.length) {
-      askAddonQuestion();
+      botMessage(currentAddons[addonIndex].question);
     } else {
       step = 3;
       botMessage("What date is your event?");
@@ -171,7 +176,7 @@ function nextStep(input) {
     addonIndex++;
     step = 1;
     if (addonIndex < currentAddons.length) {
-      askAddonQuestion();
+      botMessage(currentAddons[addonIndex].question);
     } else {
       step = 3;
       botMessage("What date is your event?");
@@ -217,11 +222,6 @@ function nextStep(input) {
   }
 }
 
-function askAddonQuestion() {
-  const addon = currentAddons[addonIndex];
-  botMessage(addon.question, ["Yes", "No"]);
-}
-
 function showSummary() {
   let summary = `Here’s your booking summary:\n\nEvent: ${eventType}\n`;
   if (answers.soundSystem.toLowerCase() === "yes")
@@ -236,14 +236,26 @@ function showSummary() {
   if (answers.soundTechnician.toLowerCase() === "yes")
     summary += `• Sound Technician\n`;
   summary += `\n📅 Date: ${answers.eventDate}\n🕒 Time: ${answers.eventTime}\n📍 Location: ${answers.eventLocation}`;
-  botMessage(summary, ["Yes", "No"]);
+  botMessage(summary + "\n\nDoes everything look correct? (Yes/No)");
   step = 6;
 }
 
 // ========================
-// Send Email
+// Send Email or Test Mode
 // ========================
 function sendEmail() {
+  console.log("sendEmail() called with:", answers);
+
+  if (!EMAILJS_SERVICE_ID || !EMAILJS_TEMPLATE_ID || !EMAILJS_PUBLIC_KEY) {
+    botMessage(
+      "✅ Test Mode: Booking request would be sent now.\n\nThis is not a confirmed booking until we agree on pricing and details via email."
+    );
+    console.warn("EmailJS keys are missing. Running in Test Mode.");
+    step = 0;
+    return;
+  }
+
+  emailjs.init(EMAILJS_PUBLIC_KEY);
   emailjs
     .send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
       event_type: eventType,
@@ -279,22 +291,16 @@ function sendEmail() {
 }
 
 // ========================
-// Start the chat
+// Initialization
 // ========================
-botMessage("Hi 👋 What type of event would you like to book?", [
-  "Wedding",
-  "Private Party",
-  "Restaurant / Bar",
-]);
-
 sendBtn.addEventListener("click", () => {
   const input = userInput.value.trim();
-  if (input) {
-    nextStep(input);
-    userInput.value = "";
-  }
+  if (!input) return;
+  userInput.value = "";
+  nextStep(input);
 });
 
-userInput.addEventListener("keypress", (e) => {
-  if (e.key === "Enter") sendBtn.click();
-});
+// Start the conversation
+botMessage(
+  "Hi! What type of event are you planning? (Wedding / Private Party / Restaurant / Bar)"
+);
