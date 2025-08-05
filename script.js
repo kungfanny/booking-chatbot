@@ -49,28 +49,36 @@ window.addEventListener("DOMContentLoaded", () => {
   };
 
   const eventAddons = {
-  Wedding: [
-    { question: "Do you want us to provide a sound system?", var: "soundSystem", sizeQuestion: true },
-    { 
-      question: "Do you want lighting?", 
-      description: "Dynamic lighting options to enhance the atmosphere of your event", 
-      var: "lighting" 
-    },
-    { question: "Do you need an extra microphone?", var: "extraMic" },
-    { question: "Would you like an acoustic set?", var: "acousticSet" },
-    { question: "Would you like ceremony songs?", var: "ceremonySongs" },
-    { question: "Would you like us to play your first dance live?", var: "firstDance" },
-    { question: "Do you want a dedicated sound technician?", var: "soundTechnician" },
+    Wedding: [
+      { question: "Do you want us to provide a sound system?", var: "soundSystem", sizeQuestion: true },
+      { 
+        question: "Do you want lighting?", 
+        description: "Dynamic lighting options to enhance the atmosphere of your event", 
+        var: "lighting" 
+      },
+      { question: "Do you need an extra microphone?", var: "extraMic" },
+      { question: "Would you like an acoustic set?", var: "acousticSet" },
+      { question: "Would you like ceremony songs?", var: "ceremonySongs" },
+      { question: "Would you like us to play your first dance live?", var: "firstDance" },
+      { question: "Do you want a dedicated sound technician?", var: "soundTechnician" },
     ],
     "Private Party": [
       { question: "Do you want us to provide a sound system?", var: "soundSystem", sizeQuestion: true },
-      { question: "Do you want lighting?", var: "lighting" },
+      { 
+        question: "Do you want lighting?", 
+        description: "Dynamic lighting options to enhance the atmosphere of your event", 
+        var: "lighting" 
+      },
       { question: "Do you need an extra microphone?", var: "extraMic" },
       { question: "Do you want a dedicated sound technician?", var: "soundTechnician" },
     ],
     "Restaurant / Bar": [
       { question: "Do you want us to provide a sound system?", var: "soundSystem", sizeQuestion: true },
-      { question: "Do you want lighting?", var: "lighting" },
+      { 
+        question: "Do you want lighting?", 
+        description: "Dynamic lighting options to enhance the atmosphere of your event", 
+        var: "lighting" 
+      },
       { question: "Do you want a dedicated sound technician?", var: "soundTechnician" },
     ],
   };
@@ -96,14 +104,26 @@ window.addEventListener("DOMContentLoaded", () => {
     chatWindow.scrollTop = chatWindow.scrollHeight;
   }
 
-  // Helper: add bot message bubble with buttons
-  function botMessageWithButtons(msg, buttons) {
+  // Helper: add bot message bubble with buttons and optional description
+  function botMessageWithButtons(msg, buttons, description = "") {
     userInput.style.display = "none";
     sendBtn.style.display = "none";
 
     const el = document.createElement("div");
     el.classList.add("message", "bot");
-    el.innerText = msg;
+
+    const questionEl = document.createElement("div");
+    questionEl.textContent = msg;
+    el.appendChild(questionEl);
+
+    if (description) {
+      const descEl = document.createElement("div");
+      descEl.textContent = description;
+      descEl.style.fontSize = "12px";
+      descEl.style.color = "#ddd";
+      descEl.style.marginTop = "4px";
+      el.appendChild(descEl);
+    }
 
     const btnContainer = document.createElement("div");
     btnContainer.style.marginTop = "8px";
@@ -117,7 +137,7 @@ window.addEventListener("DOMContentLoaded", () => {
       btn.style.border = "none";
       btn.style.cursor = "pointer";
       btn.style.fontWeight = "bold";
-      btn.style.backgroundColor = "#EBDFA3"; // your brand color
+      btn.style.backgroundColor = "#EBDFA3";
       btn.style.color = "#333";
 
       btn.addEventListener("click", () => {
@@ -141,11 +161,6 @@ window.addEventListener("DOMContentLoaded", () => {
   let currentAddons = [];
   let addonIndex = 0;
 
-  // Ask current addon question helper
-  function askAddon() {
-    botMessageWithButtons(currentAddons[addonIndex].question, ["Yes", "No"]);
-  }
-
   // Flow control
   function nextStep(input) {
     input = input.trim();
@@ -155,15 +170,18 @@ window.addEventListener("DOMContentLoaded", () => {
       userMessage(input);
       eventType = input;
       if (!eventAddons[eventType]) {
-        botMessageWithButtons("Please choose your event type:", ["Wedding", "Private Party", "Restaurant / Bar"]);
+        botMessage("Please choose: Wedding / Private Party / Restaurant / Bar");
         return;
       }
       currentAddons = eventAddons[eventType];
       addonIndex = 0;
-      step = 1;
-      askAddon();
-    } 
-    else if (step === 1) {
+      step++;
+      botMessageWithButtons(
+        currentAddons[addonIndex].question,
+        ["Yes", "No"],
+        currentAddons[addonIndex].description || ""
+      );
+    } else if (step === 1) {
       userMessage(input);
       let addon = currentAddons[addonIndex];
       answers[addon.var] = input;
@@ -176,66 +194,66 @@ window.addEventListener("DOMContentLoaded", () => {
 
       addonIndex++;
       if (addonIndex < currentAddons.length) {
-        askAddon();
+        botMessageWithButtons(
+          currentAddons[addonIndex].question,
+          ["Yes", "No"],
+          currentAddons[addonIndex].description || ""
+        );
       } else {
         step = 3;
         botMessage("What date is your event?");
       }
-    }
-    else if (step === 2) {
+    } else if (step === 2) {
       userMessage(input);
       answers.soundSystemSize = input;
       addonIndex++;
       step = 1;
 
       if (addonIndex < currentAddons.length) {
-        askAddon();
+        botMessageWithButtons(
+          currentAddons[addonIndex].question,
+          ["Yes", "No"],
+          currentAddons[addonIndex].description || ""
+        );
       } else {
         step = 3;
         botMessage("What date is your event?");
       }
-    }
-    else if (step === 3) {
+    } else if (step === 3) {
       userMessage(input);
       answers.eventDate = input;
-      step = 4;
+      step++;
       botMessage("What time should we start?");
-    }
-    else if (step === 4) {
+    } else if (step === 4) {
       userMessage(input);
       answers.eventTime = input;
-      step = 5;
+      step++;
       botMessage("Where will the event take place?");
-    }
-    else if (step === 5) {
+    } else if (step === 5) {
       userMessage(input);
       answers.eventLocation = input;
-      step = "summary";
+      step++;
       showSummary();
-    }
-    else if (step === "summary") {
+    } else if (step === 6) {
       userMessage(input);
       if (input.toLowerCase() === "yes") {
-        step = 7;
+        step++;
         botMessage("Great! Please provide your full name.");
       } else {
-        botMessageWithButtons("Okay, let's try again. What type of event are you planning?", ["Wedding", "Private Party", "Restaurant / Bar"]);
+        botMessage("Okay, booking cancelled. You can restart anytime.");
         step = 0;
       }
-    }
-    else if (step === 7) {
+    } else if (step === 7) {
       userMessage(input);
       answers.name = input;
-      step = 8;
+      step++;
       botMessage("What is your email address?");
-    }
-    else if (step === 8) {
+    } else if (step === 8) {
       userMessage(input);
       answers.email = input;
-      step = 9;
+      step++;
       botMessage("What is your phone number?");
-    }
-    else if (step === 9) {
+    } else if (step === 9) {
       userMessage(input);
       answers.phone = input;
       sendEmail();
@@ -255,7 +273,7 @@ window.addEventListener("DOMContentLoaded", () => {
     if (answers.soundTechnician.toLowerCase() === "yes") summary += `• Sound Technician\n`;
     summary += `\n📅 Date: ${answers.eventDate}\n🕒 Time: ${answers.eventTime}\n📍 Location: ${answers.eventLocation}`;
     botMessageWithButtons(summary + "\n\nDoes everything look correct?", ["Yes", "No"]);
-    step = "summary";
+    step = 6;
   }
 
   // Send booking email via EmailJS
@@ -320,6 +338,6 @@ window.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Start the conversation with event type buttons
-  botMessageWithButtons("Hi! What type of event are you planning?", ["Wedding", "Private Party", "Restaurant / Bar"]);
+  // Start the conversation
+  botMessage("Hi! What type of event are you planning? (Wedding / Private Party / Restaurant / Bar)");
 });
