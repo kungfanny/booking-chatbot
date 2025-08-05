@@ -154,18 +154,21 @@ window.addEventListener("DOMContentLoaded", () => {
     }
 
     else if (step === 3) {
+      userMessage(input); // ✅ show typed answer
       answers.eventDate = input;
       step = 4;
       botMessage("What time should we start?");
     }
 
     else if (step === 4) {
+      userMessage(input); // ✅ show typed answer
       answers.eventTime = input;
       step = 5;
       botMessage("Where will the event take place?");
     }
 
     else if (step === 5) {
+      userMessage(input); // ✅ show typed answer
       answers.eventLocation = input;
       step = "summary";
       showSummary();
@@ -183,18 +186,21 @@ window.addEventListener("DOMContentLoaded", () => {
     }
 
     else if (step === 7) {
+      userMessage(input); // ✅ show typed answer
       answers.name = input;
       step = 8;
       botMessage("What is your email address?");
     }
 
     else if (step === 8) {
+      userMessage(input); // ✅ show typed answer
       answers.email = input;
       step = 9;
       botMessage("What is your phone number?");
     }
 
     else if (step === 9) {
+      userMessage(input); // ✅ show typed answer
       answers.phone = input;
       sendEmail();
     }
