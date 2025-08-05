@@ -12,11 +12,11 @@ window.addEventListener("DOMContentLoaded", () => {
   // Toggle chat open/close
 chatToggle.addEventListener("click", () => {
   if (chatContainer.style.display === "flex") {
-    chatContainer.style.display = "none";    // Hide chat
-    chatToggle.style.display = "flex";       // Keep toggle visible
+    // Chat is open, so minimize it
+    chatContainer.style.display = "none";
   } else {
-    chatContainer.style.display = "flex";    // Show chat
-    chatToggle.style.display = "flex";       // Keep toggle visible
+    // Chat is closed, so open it
+    chatContainer.style.display = "flex";
     userInput.focus();
   }
 });
