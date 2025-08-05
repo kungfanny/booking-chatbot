@@ -49,14 +49,18 @@ window.addEventListener("DOMContentLoaded", () => {
   };
 
   const eventAddons = {
-    Wedding: [
-      { question: "Do you want us to provide a sound system?", var: "soundSystem", sizeQuestion: true },
-      { question: "Do you want lighting?", var: "lighting" },
-      { question: "Do you need an extra microphone?", var: "extraMic" },
-      { question: "Would you like an acoustic set?", var: "acousticSet" },
-      { question: "Would you like ceremony songs?", var: "ceremonySongs" },
-      { question: "Would you like us to play your first dance live?", var: "firstDance" },
-      { question: "Do you want a dedicated sound technician?", var: "soundTechnician" },
+  Wedding: [
+    { question: "Do you want us to provide a sound system?", var: "soundSystem", sizeQuestion: true },
+    { 
+      question: "Do you want lighting?", 
+      description: "Dynamic lighting options to enhance the atmosphere of your event", 
+      var: "lighting" 
+    },
+    { question: "Do you need an extra microphone?", var: "extraMic" },
+    { question: "Would you like an acoustic set?", var: "acousticSet" },
+    { question: "Would you like ceremony songs?", var: "ceremonySongs" },
+    { question: "Would you like us to play your first dance live?", var: "firstDance" },
+    { question: "Do you want a dedicated sound technician?", var: "soundTechnician" },
     ],
     "Private Party": [
       { question: "Do you want us to provide a sound system?", var: "soundSystem", sizeQuestion: true },
