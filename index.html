@@ -1,41 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
- <meta charset="UTF-8" />
- <meta name="viewport" content="width=device-width, initial-scale=1" />
- <title>Booking Chatbot</title>
- <link rel="stylesheet" href="style.css" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Booking Chatbot</title>
+<link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <!-- Toggle button -->
+  <div id="chat-toggle">💬</div>
 
- <!-- Chat container -->
- <div id="chat-container">
-   <!-- Chat header with close button -->
-   <div id="chat-header">
-     <span>Booking Chatbot</span>
-     <button id="chat-close">❌</button>
-   </div>
+  <!-- Chat container -->
+  <div id="chat-container" class="hidden">
+    <div id="chat-window"></div>
+    <div id="chat-input-area">
+      <input type="text" id="user-input" placeholder="Type your answer..." autocomplete="off" />
+      <button id="send-btn">Send</button>
+    </div>
+  </div>
 
-   <div id="chat-window"></div>
-
-   <div id="chat-input-area">
-     <input
-       type="text"
-       id="user-input"
-       placeholder="Type your answer..."
-       autocomplete="off"
-     />
-     <button id="send-btn">Send</button>
-   </div>
- </div>
-
- <!-- Toggle Button -->
- <div id="chat-toggle">💬</div>
-
- <!-- EmailJS -->
- <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-
- <!-- Your chatbot script -->
- <script src="script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
