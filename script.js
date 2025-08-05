@@ -5,6 +5,10 @@ window.addEventListener("DOMContentLoaded", () => {
   const userInput = document.getElementById("user-input");
   const sendBtn = document.getElementById("send-btn");
 
+  // Start with chat hidden, toggle visible
+  chatContainer.style.display = "none";
+  chatToggle.style.display = "flex";
+
   // Toggle chat open/close
   chatToggle.addEventListener("click", () => {
     if (chatContainer.style.display === "flex") {
@@ -24,7 +28,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
   emailjs.init(EMAILJS_PUBLIC_KEY);
 
-  // Chatbot state
+  // Chatbot state variables
   let step = 0;
   let eventType = "";
   let answers = {
@@ -67,7 +71,7 @@ window.addEventListener("DOMContentLoaded", () => {
     ],
   };
 
-  // Helpers to add messages
+  // Helper: add bot message bubble
   function botMessage(msg) {
     userInput.style.display = "block";
     sendBtn.style.display = "inline-block";
@@ -79,6 +83,7 @@ window.addEventListener("DOMContentLoaded", () => {
     chatWindow.scrollTop = chatWindow.scrollHeight;
   }
 
+  // Helper: add user message bubble
   function userMessage(msg) {
     const el = document.createElement("div");
     el.classList.add("message", "user");
@@ -87,6 +92,7 @@ window.addEventListener("DOMContentLoaded", () => {
     chatWindow.scrollTop = chatWindow.scrollHeight;
   }
 
+  // Helper: add bot message bubble with buttons
   function botMessageWithButtons(msg, buttons) {
     userInput.style.display = "none";
     sendBtn.style.display = "none";
@@ -101,13 +107,24 @@ window.addEventListener("DOMContentLoaded", () => {
     buttons.forEach((btnText) => {
       const btn = document.createElement("button");
       btn.textContent = btnText;
+      btn.style.marginRight = "8px";
+      btn.style.padding = "6px 12px";
+      btn.style.borderRadius = "5px";
+      btn.style.border = "none";
+      btn.style.cursor = "pointer";
+      btn.style.fontWeight = "bold";
+      btn.style.backgroundColor = "#EBDFA3"; // your brand color
+      btn.style.color = "#333";
+
       btn.addEventListener("click", () => {
         btnContainer.remove();
-        el.innerText = msg;
+        el.innerText = msg; // reset msg text (remove buttons)
         userInput.style.display = "block";
         sendBtn.style.display = "inline-block";
+
         nextStep(btnText);
       });
+
       btnContainer.appendChild(btn);
     });
 
@@ -120,13 +137,12 @@ window.addEventListener("DOMContentLoaded", () => {
   let currentAddons = [];
   let addonIndex = 0;
 
-  // Ask current addon question
+  // Ask current addon question helper
   function askAddon() {
-    const addon = currentAddons[addonIndex];
-    botMessageWithButtons(addon.question, ["Yes", "No"]);
+    botMessageWithButtons(currentAddons[addonIndex].question, ["Yes", "No"]);
   }
 
-  // Main conversation logic
+  // Flow control
   function nextStep(input) {
     input = input.trim();
     if (!input) return;
@@ -199,9 +215,8 @@ window.addEventListener("DOMContentLoaded", () => {
         step = 7;
         botMessage("Great! Please provide your full name.");
       } else {
-        botMessage("Okay, let's try again.");
+        botMessageWithButtons("Okay, let's try again. What type of event are you planning?", ["Wedding", "Private Party", "Restaurant / Bar"]);
         step = 0;
-        botMessageWithButtons("What type of event are you planning?", ["Wedding", "Private Party", "Restaurant / Bar"]);
       }
     }
     else if (step === 7) {
@@ -223,7 +238,7 @@ window.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Show summary with Yes/No buttons
+  // Show booking summary
   function showSummary() {
     let summary = `Here’s your booking summary:\n\nEvent: ${eventType}\n`;
     if (answers.soundSystem.toLowerCase() === "yes")
@@ -236,14 +251,18 @@ window.addEventListener("DOMContentLoaded", () => {
     if (answers.soundTechnician.toLowerCase() === "yes") summary += `• Sound Technician\n`;
     summary += `\n📅 Date: ${answers.eventDate}\n🕒 Time: ${answers.eventTime}\n📍 Location: ${answers.eventLocation}`;
     botMessageWithButtons(summary + "\n\nDoes everything look correct?", ["Yes", "No"]);
+    step = "summary";
   }
 
-  // Send booking email
+  // Send booking email via EmailJS
   function sendEmail() {
+    console.log("sendEmail() called with:", answers);
+
     if (!EMAILJS_SERVICE_ID || !EMAILJS_TEMPLATE_ID || !EMAILJS_PUBLIC_KEY) {
       botMessage(
         "✅ Test Mode: Booking request would be sent now.\n\nThis is not a confirmed booking until we agree on pricing and details via email."
       );
+      console.warn("EmailJS keys are missing. Running in Test Mode.");
       step = 0;
       return;
     }
@@ -270,17 +289,19 @@ window.addEventListener("DOMContentLoaded", () => {
         botMessage(
           "✅ Your booking request has been sent! We’ll contact you soon.\n\nThis is not a confirmed booking until we agree on pricing and details via email."
         );
+        console.log("Email sent successfully!");
         step = 0;
       })
       .catch((error) => {
         botMessage(
           "⚠️ Sorry, there was an error sending your request. Please try again later."
         );
+        console.error("EmailJS error:", error);
         step = 0;
       });
   }
 
-  // Send button and enter key
+  // Handle send button click and Enter key
   sendBtn.addEventListener("click", () => {
     const input = userInput.value.trim();
     if (!input) return;
@@ -295,6 +316,6 @@ window.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Start conversation
+  // Start the conversation with event type buttons
   botMessageWithButtons("Hi! What type of event are you planning?", ["Wedding", "Private Party", "Restaurant / Bar"]);
 });
