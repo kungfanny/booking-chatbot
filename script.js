@@ -4,33 +4,28 @@ window.addEventListener("DOMContentLoaded", () => {
   const chatWindow = document.getElementById("chat-window");
   const userInput = document.getElementById("user-input");
   const sendBtn = document.getElementById("send-btn");
-  const chatClose = document.getElementById("chat-close");
 
-  // Start with chat hidden, toggle visible
   chatContainer.style.display = "none";
   chatToggle.style.display = "flex";
 
-  // Toggle chat open/close with toggle button
   chatToggle.addEventListener("click", () => {
-    chatContainer.style.display = "flex";
-    chatToggle.style.display = "none";
-    userInput.focus();
-  });
-
-  // Close (minimize) chat with close button
-  chatClose.addEventListener("click", () => {
-    chatContainer.style.display = "none";
-    chatToggle.style.display = "flex";
+    if (chatContainer.style.display === "flex") {
+      chatContainer.style.display = "none";
+      chatToggle.style.display = "flex";
+    } else {
+      chatContainer.style.display = "flex";
+      chatToggle.style.display = "none";
+      userInput.focus();
+    }
   });
 
   // EmailJS setup
-  const EMAILJS_SERVICE_ID = "service_j792hfh"; // Your actual service ID
-  const EMAILJS_TEMPLATE_ID = "template_rglszxa"; // Your actual template ID
-  const EMAILJS_PUBLIC_KEY = "3xzHlGmEjHmgV45am"; // Your actual public key
+  const EMAILJS_SERVICE_ID = "service_j792hfh";
+  const EMAILJS_TEMPLATE_ID = "template_rglszxa";
+  const EMAILJS_PUBLIC_KEY = "3xzHlGmEjHmgV45am";
 
   emailjs.init(EMAILJS_PUBLIC_KEY);
 
-  // Chatbot state variables
   let step = 0;
   let eventType = "";
   let answers = {
@@ -73,7 +68,7 @@ window.addEventListener("DOMContentLoaded", () => {
     ],
   };
 
-  // Helper: add bot message bubble
+  // Helper to add a bot message with text only
   function botMessage(msg) {
     userInput.style.display = "block";
     sendBtn.style.display = "inline-block";
@@ -85,7 +80,7 @@ window.addEventListener("DOMContentLoaded", () => {
     chatWindow.scrollTop = chatWindow.scrollHeight;
   }
 
-  // Helper: add user message bubble
+  // Helper to add a user message bubble
   function userMessage(msg) {
     const el = document.createElement("div");
     el.classList.add("message", "user");
@@ -94,7 +89,7 @@ window.addEventListener("DOMContentLoaded", () => {
     chatWindow.scrollTop = chatWindow.scrollHeight;
   }
 
-  // Helper: add bot message bubble with buttons
+  // Helper to add a bot message with buttons
   function botMessageWithButtons(msg, buttons) {
     userInput.style.display = "none";
     sendBtn.style.display = "none";
@@ -115,15 +110,14 @@ window.addEventListener("DOMContentLoaded", () => {
       btn.style.border = "none";
       btn.style.cursor = "pointer";
       btn.style.fontWeight = "bold";
-      btn.style.backgroundColor = "#EBDFA3"; // your brand color
+      btn.style.backgroundColor = "#EBDFA3";
       btn.style.color = "#333";
 
       btn.addEventListener("click", () => {
         btnContainer.remove();
-        el.innerText = msg; // reset msg text (remove buttons)
+        el.innerText = msg; // remove buttons but keep text
         userInput.style.display = "block";
         sendBtn.style.display = "inline-block";
-
         nextStep(btnText);
       });
 
@@ -135,32 +129,36 @@ window.addEventListener("DOMContentLoaded", () => {
     chatWindow.scrollTop = chatWindow.scrollHeight;
   }
 
-  // Conversation variables
   let currentAddons = [];
   let addonIndex = 0;
 
-  // Flow control
+  function askAddonQuestion() {
+    const addon = currentAddons[addonIndex];
+    botMessageWithButtons(addon.question, ["Yes", "No"]);
+  }
+
   function nextStep(input) {
     input = input.trim();
     if (!input) return;
 
+    // Step 0: Ask event type with buttons
     if (step === 0) {
       userMessage(input);
       eventType = input;
+
       if (!eventAddons[eventType]) {
-        botMessageWithButtons(
-          "Please choose your event type:",
-          ["Wedding", "Private Party", "Restaurant / Bar"]
-        );
+        botMessageWithButtons("Please choose one of these event types:", ["Wedding", "Private Party", "Restaurant / Bar"]);
         return;
       }
       currentAddons = eventAddons[eventType];
       addonIndex = 0;
-      step++;
+      step = 1;
       askAddonQuestion();
-    } else if (step === 1) {
+    }
+    // Step 1: Add-on questions (Yes/No)
+    else if (step === 1) {
       userMessage(input);
-      let addon = currentAddons[addonIndex];
+      const addon = currentAddons[addonIndex];
       answers[addon.var] = input;
 
       if (addon.sizeQuestion && input.toLowerCase() === "yes") {
@@ -176,69 +174,74 @@ window.addEventListener("DOMContentLoaded", () => {
         step = 3;
         botMessage("What date is your event?");
       }
-    } else if (step === 2) {
+    }
+    // Step 2: Guest size question (buttons)
+    else if (step === 2) {
       userMessage(input);
       answers.soundSystemSize = input;
       addonIndex++;
       step = 1;
-
       if (addonIndex < currentAddons.length) {
         askAddonQuestion();
       } else {
         step = 3;
         botMessage("What date is your event?");
       }
-    } else if (step === 3) {
+    }
+    // Step 3: Event date (text input)
+    else if (step === 3) {
       userMessage(input);
       answers.eventDate = input;
-      step++;
+      step = 4;
       botMessage("What time should we start?");
-    } else if (step === 4) {
+    }
+    // Step 4: Event time (text input)
+    else if (step === 4) {
       userMessage(input);
       answers.eventTime = input;
-      step++;
+      step = 5;
       botMessage("Where will the event take place?");
-    } else if (step === 5) {
+    }
+    // Step 5: Event location (text input)
+    else if (step === 5) {
       userMessage(input);
       answers.eventLocation = input;
-      step++;
-      showSummary();
-    } else if (step === 6) {
+      step = 6;
+      botMessageWithButtons("Does everything look correct? (Yes / No)", ["Yes", "No"]);
+    }
+    // Step 6: Confirmation yes/no
+    else if (step === 6) {
       userMessage(input);
       if (input.toLowerCase() === "yes") {
-        step++;
+        step = 7;
         botMessage("Great! Please provide your full name.");
       } else {
-        botMessage("Okay, booking cancelled. You can restart anytime.");
+        botMessage("Okay, booking cancelled. You can restart anytime by refreshing the page.");
         step = 0;
       }
-    } else if (step === 7) {
+    }
+    // Step 7: Name
+    else if (step === 7) {
       userMessage(input);
       answers.name = input;
-      step++;
+      step = 8;
       botMessage("What is your email address?");
-    } else if (step === 8) {
+    }
+    // Step 8: Email
+    else if (step === 8) {
       userMessage(input);
       answers.email = input;
-      step++;
+      step = 9;
       botMessage("What is your phone number?");
-    } else if (step === 9) {
+    }
+    // Step 9: Phone and send email
+    else if (step === 9) {
       userMessage(input);
       answers.phone = input;
       sendEmail();
     }
   }
 
-  function askAddonQuestion() {
-    const addon = currentAddons[addonIndex];
-    if (addon.sizeQuestion) {
-      botMessageWithButtons(addon.question, ["Yes", "No"]);
-    } else {
-      botMessageWithButtons(addon.question, ["Yes", "No"]);
-    }
-  }
-
-  // Show booking summary
   function showSummary() {
     let summary = `Here’s your booking summary:\n\nEvent: ${eventType}\n`;
     if (answers.soundSystem.toLowerCase() === "yes")
@@ -254,12 +257,9 @@ window.addEventListener("DOMContentLoaded", () => {
     step = 6;
   }
 
-  // Send booking email via EmailJS
   function sendEmail() {
     if (!EMAILJS_SERVICE_ID || !EMAILJS_TEMPLATE_ID || !EMAILJS_PUBLIC_KEY) {
-      botMessage(
-        "✅ Test Mode: Booking request would be sent now.\n\nThis is not a confirmed booking until we agree on pricing and details via email."
-      );
+      botMessage("✅ Test Mode: Booking request would be sent now.\n\nThis is not a confirmed booking.");
       step = 0;
       return;
     }
@@ -283,20 +283,15 @@ window.addEventListener("DOMContentLoaded", () => {
         customer_phone: answers.phone,
       })
       .then(() => {
-        botMessage(
-          "✅ Your booking request has been sent! We’ll contact you soon.\n\nThis is not a confirmed booking until we agree on pricing and details via email."
-        );
+        botMessage("✅ Your booking request has been sent! We’ll contact you soon.");
         step = 0;
       })
       .catch((error) => {
-        botMessage(
-          "⚠️ Sorry, there was an error sending your request. Please try again later."
-        );
+        botMessage("⚠️ Sorry, there was an error sending your request. Please try again later.");
         step = 0;
       });
   }
 
-  // Handle send button click and Enter key
   sendBtn.addEventListener("click", () => {
     const input = userInput.value.trim();
     if (!input) return;
@@ -311,6 +306,6 @@ window.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Start the conversation with buttons for event type
+  // Start conversation with buttons for event type
   botMessageWithButtons("Hi! What type of event are you planning?", ["Wedding", "Private Party", "Restaurant / Bar"]);
 });
