@@ -10,16 +10,17 @@ window.addEventListener("DOMContentLoaded", () => {
   chatToggle.style.display = "flex";
 
   // Toggle chat open/close
-  chatToggle.addEventListener("click", () => {
-    if (chatContainer.style.display === "flex") {
-      chatContainer.style.display = "none";
-      chatToggle.style.display = "flex";
-    } else {
-      chatContainer.style.display = "flex";
-      chatToggle.style.display = "none";
-      userInput.focus();
-    }
-  });
+chatToggle.addEventListener("click", () => {
+  if (chatContainer.style.display === "flex") {
+    chatContainer.style.display = "none";    // Hide chat
+    chatToggle.style.display = "flex";       // Keep toggle visible
+  } else {
+    chatContainer.style.display = "flex";    // Show chat
+    chatToggle.style.display = "flex";       // Keep toggle visible
+    userInput.focus();
+  }
+});
+
 
   // EmailJS setup
   const EMAILJS_SERVICE_ID = "service_j792hfh"; // Your actual service ID
