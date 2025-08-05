@@ -1,9 +1,7 @@
-/* =======================
-   Popup Chatbot Styles
-   ======================= */
+/* Popup Chatbot Styles */
 #chat-container {
   position: fixed;
-  bottom: 80px; /* Keep chat above toggle */
+  bottom: 80px;  /* so chat pops up above toggle */
   right: 20px;
   width: 360px;
   max-width: 90vw;
@@ -12,10 +10,11 @@
   border: 1px solid #ccc;
   border-radius: 10px;
   box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-  display: none; /* Hidden by default */
+  display: flex;
   flex-direction: column;
   z-index: 9999;
   font-family: Arial, sans-serif;
+  display: none;
 }
 
 /* Messages scrollable area */
@@ -62,17 +61,16 @@
   font-weight: bold;
   transition: background-color 0.3s ease;
 }
+
 #send-btn:hover {
   background-color: #d4c78f;
 }
 
-/* =======================
-   Toggle Button
-   ======================= */
+/* FIX: Force toggle outside chat container */
 #chat-toggle {
-  position: fixed;
-  bottom: 20px; /* Stays at page bottom */
-  right: 20px;
+  position: fixed !important;  /* override any Wix nesting */
+  bottom: 20px !important;     /* 20px from bottom of screen */
+  right: 20px !important;      /* 20px from right side */
   width: 50px;
   height: 50px;
   background-color: #EBDFA3; /* soft gold */
@@ -80,21 +78,20 @@
   border-radius: 50%;
   font-size: 24px;
   cursor: pointer;
-  z-index: 10000; /* Always above chat */
+  z-index: 10000 !important;   /* always above chat container */
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
   user-select: none;
   transition: background-color 0.3s ease;
 }
+
 #chat-toggle:hover {
   background-color: #d4c78f;
 }
 
-/* =======================
-   Message bubbles
-   ======================= */
+/* Message bubbles */
 .message {
   margin: 0;
   padding: 10px 14px;
@@ -109,35 +106,43 @@
   position: relative;
 }
 
-/* Bot messages */
+/* Bot messages - warm grey background */
 .message.bot {
   background: #867F7C;
   color: white;
   align-self: flex-start;
   border-bottom-left-radius: 2px;
 }
+
+/* Bot message tail */
 .message.bot::after {
   content: "";
   position: absolute;
   left: -8px;
   top: 12px;
+  width: 0;
+  height: 0;
   border-top: 8px solid transparent;
   border-right: 8px solid #867F7C;
   border-bottom: 8px solid transparent;
 }
 
-/* User messages */
+/* User messages - soft gold background */
 .message.user {
   background: #EBDFA3;
   color: #333;
   align-self: flex-end;
   border-bottom-right-radius: 2px;
 }
+
+/* User message tail */
 .message.user::after {
   content: "";
   position: absolute;
   right: -8px;
   top: 12px;
+  width: 0;
+  height: 0;
   border-top: 8px solid transparent;
   border-left: 8px solid #EBDFA3;
   border-bottom: 8px solid transparent;
@@ -155,6 +160,7 @@
   font-weight: bold;
   transition: background-color 0.3s ease;
 }
+
 .message.bot button:hover {
   background-color: #d4c78f;
 }
