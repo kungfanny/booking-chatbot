@@ -1,31 +1,31 @@
-/* Reset margins and ensure full height */
 html, body {
   margin: 0;
   padding: 0;
   height: 100%;
   background: transparent;
   font-family: Arial, sans-serif;
+  position: relative; /* make body relative to position absolute children */
 }
 
-/* Popup Chatbot Styles */
+/* Chat container now absolute, bottom-right inside iframe */
 #chat-container {
-  position: fixed;
+  position: absolute;
   bottom: 20px;
   right: 20px;
   width: 350px;
-  max-width: 90vw;
   height: 420px;
-  background: #f0f0f0; /* light grey background */
+  background: #f0f0f0;
   border: 1px solid #ccc;
   border-radius: 10px;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
   display: flex;
   flex-direction: column;
   z-index: 9999;
   overflow: hidden;
 }
 
-/* Scrollable messages area */
+/* Rest stays same */
+
 #chat-window {
   flex-grow: 1;
   overflow-y: auto;
@@ -34,10 +34,9 @@ html, body {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  background: #e9e7e3; /* slightly lighter grey inside */
+  background: #e9e7e3;
 }
 
-/* Input area fixed at bottom */
 #chat-input-area {
   display: flex;
   align-items: center;
@@ -46,7 +45,6 @@ html, body {
   border-top: 1px solid #ddd;
 }
 
-/* Input box styling */
 #user-input {
   flex: 1;
   border: 1px solid #ccc;
@@ -57,12 +55,11 @@ html, body {
   background: white;
 }
 
-/* Send button */
 #send-btn {
   margin-left: 10px;
   padding: 10px 18px;
   border: none;
-  background-color: #EBDFA3; /* soft gold */
+  background-color: #EBDFA3;
   color: #333;
   border-radius: 5px;
   cursor: pointer;
@@ -71,31 +68,6 @@ html, body {
 }
 
 #send-btn:hover {
-  background-color: #d4c78f;
-}
-
-/* Toggle button */
-#chat-toggle {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background-color: #EBDFA3; /* soft gold */
-  color: #333;
-  border-radius: 50%;
-  width: 50px;
-  height: 50px;
-  font-size: 24px;
-  cursor: pointer;
-  z-index: 10000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  user-select: none;
-  transition: background-color 0.3s ease;
-}
-
-#chat-toggle:hover {
   background-color: #d4c78f;
 }
 
@@ -112,7 +84,6 @@ html, body {
   position: relative;
 }
 
-/* Bot messages - warm grey background */
 .message.bot {
   background: #867F7C;
   color: white;
@@ -120,7 +91,6 @@ html, body {
   border-bottom-left-radius: 2px;
 }
 
-/* Bot message tail */
 .message.bot::after {
   content: "";
   position: absolute;
@@ -133,7 +103,6 @@ html, body {
   border-bottom: 8px solid transparent;
 }
 
-/* User messages - soft gold background */
 .message.user {
   background: #EBDFA3;
   color: #333;
@@ -141,7 +110,6 @@ html, body {
   border-bottom-right-radius: 2px;
 }
 
-/* User message tail */
 .message.user::after {
   content: "";
   position: absolute;
@@ -154,7 +122,6 @@ html, body {
   border-bottom: 8px solid transparent;
 }
 
-/* Bot buttons inside messages */
 .message.bot button {
   background-color: #EBDFA3;
   color: #333;
