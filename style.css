@@ -1,157 +1,166 @@
-/* Basic resets */
-html, body {
-  margin: 0; padding: 0; height: 100%; background: transparent; font-family: Arial, sans-serif;
-  position: relative;
-}
-
-/* Toggle button styling */
-#chat-toggle {
+/* Popup Chatbot Styles */
+#chat-container {
   position: fixed;
   bottom: 20px;
   right: 20px;
-  background-color: #EBDFA3;
-  color: #333;
-  border-radius: 50%;
-  width: 50px;
-  height: 50px;
-  font-size: 28px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-  user-select: none;
-  z-index: 10000;
-  transition: background-color 0.3s ease;
-}
-#chat-toggle:hover {
-  background-color: #d4c78f;
-}
-
-/* Chat container styling */
-#chat-container {
-  position: fixed;
-  bottom: 80px; /* above toggle */
-  right: 20px;
   width: 360px;
-  height: 440px;
-  background: #f0f0f0;
+  max-width: 90vw;
+  height: 420px;
+  background: #f0f0f0; /* light grey background */
+  border: 1px solid #ccc;
   border-radius: 10px;
-  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
   display: flex;
   flex-direction: column;
-  overflow: hidden;
   z-index: 9999;
+  font-family: Arial, sans-serif;
+  display: none; /* start hidden */
 }
 
-/* Hide chat container when toggled */
-.hidden {
-  display: none;
-}
-
+/* Messages scrollable area */
 #chat-window {
   flex-grow: 1;
   overflow-y: auto;
-  padding: 12px 16px;
+  padding: 15px;
   border-bottom: 1px solid #ddd;
-  background: #e9e7e3;
   display: flex;
   flex-direction: column;
   gap: 10px;
+  max-height: 360px;
+  word-wrap: break-word;
 }
 
-/* Input area */
+/* Input area fixed at bottom */
 #chat-input-area {
   display: flex;
-  padding: 10px 12px;
+  align-items: center;
+  padding: 8px;
   background: #f9f9f9;
   border-top: 1px solid #ddd;
 }
 
+/* Input box styling */
 #user-input {
   flex: 1;
-  padding: 10px 14px;
-  border-radius: 5px;
   border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 5px;
   font-size: 14px;
   outline: none;
-  background: white;
 }
 
+/* Send button */
 #send-btn {
-  margin-left: 10px;
-  padding: 10px 18px;
+  margin-left: 8px;
+  padding: 10px 16px;
   border: none;
-  background-color: #EBDFA3;
+  background-color: #EBDFA3; /* soft gold */
   color: #333;
   border-radius: 5px;
   cursor: pointer;
   font-weight: bold;
   transition: background-color 0.3s ease;
 }
+
 #send-btn:hover {
   background-color: #d4c78f;
 }
 
-/* Messages styling */
-.message {
-  max-width: 75%;
-  padding: 12px 16px;
-  border-radius: 16px;
-  font-size: 14px;
-  line-height: 1.4;
-  word-wrap: break-word;
-  position: relative;
-  display: inline-block;
-  margin: 0;
+/* Toggle button */
+#chat-toggle {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #EBDFA3; /* soft gold */
+  color: #333;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  font-size: 24px;
+  cursor: pointer;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  user-select: none;
+  transition: background-color 0.3s ease;
 }
+
+#chat-toggle:hover {
+  background-color: #d4c78f;
+}
+
+/* Message bubbles */
+.message {
+  margin: 0;
+  padding: 10px 14px;
+  border-radius: 16px;
+  max-width: 75%;
+  word-wrap: break-word;
+  white-space: normal;
+  word-break: break-word;
+  font-size: 14px;
+  line-height: 1.5;
+  display: inline-block;
+  position: relative;
+}
+
+/* Bot messages - warm grey background */
 .message.bot {
   background: #867F7C;
   color: white;
   align-self: flex-start;
   border-bottom-left-radius: 2px;
 }
+
+/* Bot message tail */
 .message.bot::after {
   content: "";
   position: absolute;
   left: -8px;
-  top: 16px;
+  top: 12px;
+  width: 0;
+  height: 0;
   border-top: 8px solid transparent;
   border-right: 8px solid #867F7C;
   border-bottom: 8px solid transparent;
-  width: 0;
-  height: 0;
 }
+
+/* User messages - soft gold background */
 .message.user {
   background: #EBDFA3;
   color: #333;
   align-self: flex-end;
   border-bottom-right-radius: 2px;
 }
+
+/* User message tail */
 .message.user::after {
   content: "";
   position: absolute;
   right: -8px;
-  top: 16px;
+  top: 12px;
+  width: 0;
+  height: 0;
   border-top: 8px solid transparent;
   border-left: 8px solid #EBDFA3;
   border-bottom: 8px solid transparent;
-  width: 0;
-  height: 0;
 }
 
-/* Bot buttons */
+/* Bot buttons inside messages */
 .message.bot button {
   background-color: #EBDFA3;
+  color: #333;
   border: none;
-  padding: 6px 14px;
-  margin: 5px 8px 0 0;
+  padding: 6px 12px;
+  margin: 5px 5px 0 0;
   border-radius: 5px;
   cursor: pointer;
   font-weight: bold;
-  color: #333;
   transition: background-color 0.3s ease;
 }
+
 .message.bot button:hover {
   background-color: #d4c78f;
 }
