@@ -1,6 +1,6 @@
 /* Popup Chatbot Styles */
 #chat-container {
-  position: fixed;
+  position: flex;
   bottom: 80px;  /* so chat pops up above toggle */
   right: 20px;
   width: 360px;
