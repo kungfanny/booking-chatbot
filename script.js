@@ -300,7 +300,7 @@ window.addEventListener("DOMContentLoaded", () => {
         step = 0;
       });
   }
-
+  
   // Handle send button click and Enter key
   sendBtn.addEventListener("click", () => {
     const input = userInput.value.trim();
