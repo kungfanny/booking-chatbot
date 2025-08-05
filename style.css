@@ -68,25 +68,28 @@
 
 #chat-toggle {
   position: fixed;
-  bottom: 20px;
-  right: 20px;
+  bottom: 20px;        /* 20px from bottom of the page */
+  right: 20px;         /* 20px from right edge */
   width: 50px;
   height: 50px;
-  background-color: #EBDFA3;
+  background-color: #EBDFA3; /* soft gold */
+  color: #333;
   border-radius: 50%;
   font-size: 24px;
   cursor: pointer;
-  z-index: 10001; /* even higher */
+  z-index: 10000;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
   user-select: none;
   transition: background-color 0.3s ease;
-
-  /* Make sure it is not inside chat-container */
-  pointer-events: auto; /* ensure clicks pass through */
 }
+
+#chat-toggle:hover {
+  background-color: #d4c78f;
+}
+
 
 
 #chat-toggle:hover {
