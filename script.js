@@ -52,23 +52,23 @@ chatToggle.addEventListener("click", () => {
   const eventAddons = {
     Wedding: [
       { question: "Do you want us to provide a sound system?", var: "soundSystem", sizeQuestion: true },
-      { question: "Do you want lighting?", var: "lighting" },
-      { question: "Do you need an extra microphone?", var: "extraMic" },
-      { question: "Would you like an acoustic set?", var: "acousticSet" },
-      { question: "Would you like ceremony songs?", var: "ceremonySongs" },
-      { question: "Would you like us to play your first dance live?", var: "firstDance" },
-      { question: "Do you want a dedicated sound technician?", var: "soundTechnician" },
+      { question: "Do you want dynamic lighting options to enhance the atmosphere of your event?", var: "lighting" },
+      { question: "Do you need an extra wireless microphone for e.g. toastmaster or host?", var: "extraMic" },
+      { question: "Would you like a small 30 minutes cozy acoustic set during cocktail hour, creating a warm ambiance during mingle?", var: "acousticSet" },
+      { question: "Would you like 2-4 songs during enter/exit to ceremony or during exchanging of rings?", var: "ceremonySongs" },
+      { question: "Would you like us to play your request of song for the first dance as newlyweds?", var: "firstDance" },
+      { question: "Do you need a sound technincian, for background music or any other help with the sound?", var: "soundTechnician" },
     ],
     "Private Party": [
       { question: "Do you want us to provide a sound system?", var: "soundSystem", sizeQuestion: true },
-      { question: "Do you want lighting?", var: "lighting" },
-      { question: "Do you need an extra microphone?", var: "extraMic" },
-      { question: "Do you want a dedicated sound technician?", var: "soundTechnician" },
+      { question: "Do you want dynamic lighting options to enhance the atmosphere of your event?", var: "lighting" },
+      { question: "Do you need an extra wireless microphone for e.g. toastmaster or host?", var: "extraMic" },
+      { question: "Do you need a sound technincian, for background music or any other help with the sound?", var: "soundTechnician" },
     ],
     "Restaurant / Bar": [
       { question: "Do you want us to provide a sound system?", var: "soundSystem", sizeQuestion: true },
-      { question: "Do you want lighting?", var: "lighting" },
-      { question: "Do you want a dedicated sound technician?", var: "soundTechnician" },
+      { question: "Do you want dynamic lighting options to enhance the atmosphere of your event?", var: "lighting" },
+      { question: "Do you need a sound technincian, for background music or any other help with the sound?", var: "soundTechnician" },
     ],
   };
 
@@ -196,7 +196,7 @@ chatToggle.addEventListener("click", () => {
       userMessage(input);
       answers.eventDate = input;
       step = 4;
-      botMessage("What time should we start?");
+      botMessage("What time do you want me to start?");
     }
     else if (step === 4) {
       userMessage(input);
@@ -214,7 +214,7 @@ chatToggle.addEventListener("click", () => {
       userMessage(input);
       if (input.toLowerCase() === "yes") {
         step = 7;
-        botMessage("Great! Please provide your full name.");
+        botMessage("Great! Please provide your full name");
       } else {
         botMessageWithButtons("Okay, let's try again. What type of event are you planning?", ["Wedding", "Private Party", "Restaurant / Bar"]);
         step = 0;
@@ -241,7 +241,7 @@ chatToggle.addEventListener("click", () => {
 
   // Show booking summary
   function showSummary() {
-    let summary = `Here’s your booking summary:\n\nEvent: ${eventType}\n`;
+    let summary = `Here’s your booking request summary:\n\nEvent: ${eventType}\n`;
     if (answers.soundSystem.toLowerCase() === "yes")
       summary += `• Sound System (${answers.soundSystemSize})\n`;
     if (answers.lighting.toLowerCase() === "yes") summary += `• Lighting\n`;
@@ -318,5 +318,5 @@ chatToggle.addEventListener("click", () => {
   });
 
   // Start the conversation with event type buttons
-  botMessageWithButtons("Hi! What type of event are you planning?", ["Wedding", "Private Party", "Restaurant / Bar"]);
+  botMessageWithButtons("Hi! Are you planning an event with live music? What type of event is it? Or are you booking for your restaurant/bar?", ["Wedding", "Private Party", "Restaurant / Bar"]);
 });
