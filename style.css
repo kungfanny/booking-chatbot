@@ -1,6 +1,6 @@
 /* Popup Chatbot Styles */
 #chat-container {
-  position: flex;
+  position: fixed;
   bottom: 80px;  /* so chat pops up above toggle */
   right: 20px;
   width: 360px;
@@ -68,7 +68,7 @@
 
 /* FIX: Force toggle outside chat container */
 #chat-toggle {
-  position: fixed !important;  /* override any Wix nesting */
+  position: flex !important;  /* override any Wix nesting */
   bottom: 20px !important;     /* 20px from bottom of screen */
   right: 20px !important;      /* 20px from right side */
   width: 50px;
