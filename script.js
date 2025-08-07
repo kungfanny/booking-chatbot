@@ -6,21 +6,20 @@ window.addEventListener("DOMContentLoaded", () => {
   const sendBtn = document.getElementById("send-btn");
 
   // Start with chat hidden, toggle visible
-chatContainer.style.display = "none";
-chatToggle.style.display = "flex";
+  chatContainer.style.display = "none";
+  chatToggle.style.display = "flex";
 
-// Toggle chat open/close
-chatToggle.addEventListener("click", () => {
-  if (chatContainer.style.display === "flex") {
-    // Chat is open, so minimize it
-    chatContainer.style.display = "none";
-  } else {
-    // Chat is closed, so open it
-    chatContainer.style.display = "flex";
-    userInput.focus();
-  }
-});
-
+  // Toggle chat open/close
+  chatToggle.addEventListener("click", () => {
+    if (chatContainer.style.display === "flex") {
+      // Chat is open, so minimize it
+      chatContainer.style.display = "none";
+    } else {
+      // Chat is closed, so open it
+      chatContainer.style.display = "flex";
+      userInput.focus();
+    }
+  });
 
   // EmailJS setup
   const EMAILJS_SERVICE_ID = "service_j792hfh"; // Your actual service ID
@@ -51,24 +50,80 @@ chatToggle.addEventListener("click", () => {
 
   const eventAddons = {
     Wedding: [
-      { question: "Do you want us to provide a sound system?", var: "soundSystem", sizeQuestion: true },
-      { question: "Do you want dynamic lighting options to enhance the atmosphere of your event?", var: "lighting" },
-      { question: "Do you need an extra wireless microphone for e.g. toastmaster or host?", var: "extraMic" },
-      { question: "Would you like a small 30 minutes cozy acoustic set during cocktail hour, creating a warm ambiance during mingle?", var: "acousticSet" },
-      { question: "Would you like 2-4 songs during enter/exit to ceremony or during exchanging of rings?", var: "ceremonySongs" },
-      { question: "Would you like us to play your request of song for the first dance as newlyweds?", var: "firstDance" },
-      { question: "Do you need a sound technincian, for background music or any other help with the sound?", var: "soundTechnician" },
+      {
+        question: "Do you want us to provide a sound system?",
+        var: "soundSystem",
+        sizeQuestion: true,
+      },
+      {
+        question:
+          "Do you want dynamic lighting options to enhance the atmosphere of your event?",
+        var: "lighting",
+      },
+      {
+        question:
+          "Do you need an extra wireless microphone for e.g. toastmaster or host?",
+        var: "extraMic",
+      },
+      {
+        question:
+          "Would you like a small 30 minutes cozy acoustic set during cocktail hour, creating a warm ambiance during mingle?",
+        var: "acousticSet",
+      },
+      {
+        question:
+          "Would you like 2-4 songs during enter/exit to ceremony or during exchanging of rings?",
+        var: "ceremonySongs",
+      },
+      {
+        question:
+          "Would you like us to play your request of song for the first dance as newlyweds?",
+        var: "firstDance",
+      },
+      {
+        question:
+          "Do you need a sound technincian, for background music or any other help with the sound?",
+        var: "soundTechnician",
+      },
     ],
     "Private Party": [
-      { question: "Do you want us to provide a sound system?", var: "soundSystem", sizeQuestion: true },
-      { question: "Do you want dynamic lighting options to enhance the atmosphere of your event?", var: "lighting" },
-      { question: "Do you need an extra wireless microphone for e.g. toastmaster or host?", var: "extraMic" },
-      { question: "Do you need a sound technincian, for background music or any other help with the sound?", var: "soundTechnician" },
+      {
+        question: "Do you want us to provide a sound system?",
+        var: "soundSystem",
+        sizeQuestion: true,
+      },
+      {
+        question:
+          "Do you want dynamic lighting options to enhance the atmosphere of your event?",
+        var: "lighting",
+      },
+      {
+        question:
+          "Do you need an extra wireless microphone for e.g. toastmaster or host?",
+        var: "extraMic",
+      },
+      {
+        question:
+          "Do you need a sound technincian, for background music or any other help with the sound?",
+        var: "soundTechnician",
+      },
     ],
     "Restaurant / Bar": [
-      { question: "Do you want us to provide a sound system?", var: "soundSystem", sizeQuestion: true },
-      { question: "Do you want dynamic lighting options to enhance the atmosphere of your event?", var: "lighting" },
-      { question: "Do you need a sound technincian, for background music or any other help with the sound?", var: "soundTechnician" },
+      {
+        question: "Do you want us to provide a sound system?",
+        var: "soundSystem",
+        sizeQuestion: true,
+      },
+      {
+        question:
+          "Do you want dynamic lighting options to enhance the atmosphere of your event?",
+        var: "lighting",
+      },
+      {
+        question:
+          "Do you need a sound technincian, for background music or any other help with the sound?",
+        var: "soundTechnician",
+      },
     ],
   };
 
@@ -152,22 +207,28 @@ chatToggle.addEventListener("click", () => {
       userMessage(input);
       eventType = input;
       if (!eventAddons[eventType]) {
-        botMessageWithButtons("Please choose your event type:", ["Wedding", "Private Party", "Restaurant / Bar"]);
+        botMessageWithButtons("Please choose your event type:", [
+          "Wedding",
+          "Private Party",
+          "Restaurant / Bar",
+        ]);
         return;
       }
       currentAddons = eventAddons[eventType];
       addonIndex = 0;
       step = 1;
       askAddon();
-    } 
-    else if (step === 1) {
+    } else if (step === 1) {
       userMessage(input);
       let addon = currentAddons[addonIndex];
       answers[addon.var] = input;
 
       if (addon.sizeQuestion && input.toLowerCase() === "yes") {
         step = 2;
-        botMessageWithButtons("How many guests will attend?", ["Up to 50 persons", "50-200 persons"]);
+        botMessageWithButtons("How many guests will attend?", [
+          "Up to 50 persons",
+          "50-200 persons",
+        ]);
         return;
       }
 
@@ -178,8 +239,7 @@ chatToggle.addEventListener("click", () => {
         step = 3;
         botMessage("What date is your event?");
       }
-    }
-    else if (step === 2) {
+    } else if (step === 2) {
       userMessage(input);
       answers.soundSystemSize = input;
       addonIndex++;
@@ -191,48 +251,44 @@ chatToggle.addEventListener("click", () => {
         step = 3;
         botMessage("What date is your event?");
       }
-    }
-    else if (step === 3) {
+    } else if (step === 3) {
       userMessage(input);
       answers.eventDate = input;
       step = 4;
       botMessage("What time do you want me to start?");
-    }
-    else if (step === 4) {
+    } else if (step === 4) {
       userMessage(input);
       answers.eventTime = input;
       step = 5;
       botMessage("Where will the event take place?");
-    }
-    else if (step === 5) {
+    } else if (step === 5) {
       userMessage(input);
       answers.eventLocation = input;
       step = "summary";
       showSummary();
-    }
-    else if (step === "summary") {
+    } else if (step === "summary") {
       userMessage(input);
       if (input.toLowerCase() === "yes") {
         step = 7;
         botMessage("Great! Please provide your full name");
       } else {
-        botMessageWithButtons("Okay, let's try again. What type of event are you planning?", ["Wedding", "Private Party", "Restaurant / Bar"]);
+        botMessageWithButtons(
+          "Okay, let's try again. What type of event are you planning?",
+          ["Wedding", "Private Party", "Restaurant / Bar"]
+        );
         step = 0;
       }
-    }
-    else if (step === 7) {
+    } else if (step === 7) {
       userMessage(input);
       answers.name = input;
       step = 8;
       botMessage("What is your email address?");
-    }
-    else if (step === 8) {
+    } else if (step === 8) {
       userMessage(input);
       answers.email = input;
       step = 9;
       botMessage("What is your phone number?");
-    }
-    else if (step === 9) {
+    } else if (step === 9) {
       userMessage(input);
       answers.phone = input;
       sendEmail();
@@ -241,17 +297,24 @@ chatToggle.addEventListener("click", () => {
 
   // Show booking summary
   function showSummary() {
-    let summary = Here’s your booking request summary:\n\nEvent: ${eventType}\n;
+    let summary = `Here’s your booking request summary:\n\nEvent: ${eventType}\n`;
     if (answers.soundSystem.toLowerCase() === "yes")
-      summary += • Sound System (${answers.soundSystemSize})\n;
-    if (answers.lighting.toLowerCase() === "yes") summary += • Lighting\n;
-    if (answers.extraMic.toLowerCase() === "yes") summary += • Extra Mic\n;
-    if (answers.acousticSet.toLowerCase() === "yes") summary += • Acoustic Set\n;
-    if (answers.ceremonySongs.toLowerCase() === "yes") summary += • Ceremony Songs\n;
-    if (answers.firstDance.toLowerCase() === "yes") summary += • First Dance\n;
-    if (answers.soundTechnician.toLowerCase() === "yes") summary += • Sound Technician\n;
-    summary += \n📅 Date: ${answers.eventDate}\n🕒 Time: ${answers.eventTime}\n📍 Location: ${answers.eventLocation};
-    botMessageWithButtons(summary + "\n\nDoes everything look correct?", ["Yes", "No"]);
+      summary += `• Sound System (${answers.soundSystemSize})\n`;
+    if (answers.lighting.toLowerCase() === "yes") summary += `• Lighting\n`;
+    if (answers.extraMic.toLowerCase() === "yes") summary += `• Extra Mic\n`;
+    if (answers.acousticSet.toLowerCase() === "yes")
+      summary += `• Acoustic Set\n`;
+    if (answers.ceremonySongs.toLowerCase() === "yes")
+      summary += `• Ceremony Songs\n`;
+    if (answers.firstDance.toLowerCase() === "yes")
+      summary += `• First Dance\n`;
+    if (answers.soundTechnician.toLowerCase() === "yes")
+      summary += `• Sound Technician\n`;
+    summary += `\n📅 Date: ${answers.eventDate}\n🕒 Time: ${answers.eventTime}\n📍 Location: ${answers.eventLocation}`;
+    botMessageWithButtons(summary + "\n\nDoes everything look correct?", [
+      "Yes",
+      "No",
+    ]);
     step = "summary";
   }
 
@@ -301,7 +364,7 @@ chatToggle.addEventListener("click", () => {
         step = 0;
       });
   }
-  
+
   // Handle send button click and Enter key
   sendBtn.addEventListener("click", () => {
     const input = userInput.value.trim();
@@ -318,5 +381,8 @@ chatToggle.addEventListener("click", () => {
   });
 
   // Start the conversation with event type buttons
-  botMessageWithButtons("Hi! Are you planning an event with live music? What type of event is it? Or are you booking for your restaurant/bar?", ["Wedding", "Private Party", "Restaurant / Bar"]);
+  botMessageWithButtons(
+    "Hi! Are you planning an event with live music? What type of event is it? Or are you booking for your restaurant/bar?",
+    ["Wedding", "Private Party", "Restaurant / Bar"]
+  );
 });
