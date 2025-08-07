@@ -6,10 +6,10 @@ window.addEventListener("DOMContentLoaded", () => {
   const sendBtn = document.getElementById("send-btn");
 
   // Start with chat hidden, toggle visible
-  chatContainer.style.display = "none";
-  chatToggle.style.display = "flex";
+chatContainer.style.display = "none";
+chatToggle.style.display = "flex";
 
-  // Toggle chat open/close
+// Toggle chat open/close
 chatToggle.addEventListener("click", () => {
   if (chatContainer.style.display === "flex") {
     // Chat is open, so minimize it
