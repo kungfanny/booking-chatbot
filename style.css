@@ -20,7 +20,7 @@ body {
 }
 
 #chat-container {
-  position: fixed;
+  position: flex;
   bottom: 90px;
   right: 20px;
   width: 360px;
