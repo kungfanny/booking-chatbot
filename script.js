@@ -241,16 +241,16 @@ chatToggle.addEventListener("click", () => {
 
   // Show booking summary
   function showSummary() {
-    let summary = `Here’s your booking request summary:\n\nEvent: ${eventType}\n`;
+    let summary = Here’s your booking request summary:\n\nEvent: ${eventType}\n;
     if (answers.soundSystem.toLowerCase() === "yes")
-      summary += `• Sound System (${answers.soundSystemSize})\n`;
-    if (answers.lighting.toLowerCase() === "yes") summary += `• Lighting\n`;
-    if (answers.extraMic.toLowerCase() === "yes") summary += `• Extra Mic\n`;
-    if (answers.acousticSet.toLowerCase() === "yes") summary += `• Acoustic Set\n`;
-    if (answers.ceremonySongs.toLowerCase() === "yes") summary += `• Ceremony Songs\n`;
-    if (answers.firstDance.toLowerCase() === "yes") summary += `• First Dance\n`;
-    if (answers.soundTechnician.toLowerCase() === "yes") summary += `• Sound Technician\n`;
-    summary += `\n📅 Date: ${answers.eventDate}\n🕒 Time: ${answers.eventTime}\n📍 Location: ${answers.eventLocation}`;
+      summary += • Sound System (${answers.soundSystemSize})\n;
+    if (answers.lighting.toLowerCase() === "yes") summary += • Lighting\n;
+    if (answers.extraMic.toLowerCase() === "yes") summary += • Extra Mic\n;
+    if (answers.acousticSet.toLowerCase() === "yes") summary += • Acoustic Set\n;
+    if (answers.ceremonySongs.toLowerCase() === "yes") summary += • Ceremony Songs\n;
+    if (answers.firstDance.toLowerCase() === "yes") summary += • First Dance\n;
+    if (answers.soundTechnician.toLowerCase() === "yes") summary += • Sound Technician\n;
+    summary += \n📅 Date: ${answers.eventDate}\n🕒 Time: ${answers.eventTime}\n📍 Location: ${answers.eventLocation};
     botMessageWithButtons(summary + "\n\nDoes everything look correct?", ["Yes", "No"]);
     step = "summary";
   }
