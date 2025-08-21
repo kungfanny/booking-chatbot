@@ -27,6 +27,11 @@
     
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 
+    <script>
+      document.querySelector("#chat-toggle").addEventListener("click", () => {
+            window.parent.postMessage({ type: "BUTTON_CHATBOT" }, "*")
+      })
+    </script>
     
     <script src="script.js"></script>
   </body>
