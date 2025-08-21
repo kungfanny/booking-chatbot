@@ -1,7 +1,7 @@
-/* Popup Chatbot Styles */
+
 #chat-container {
   position: flex;
-  bottom: 80px; /* so chat pops up above toggle */
+  bottom: 80px; 
   right: 20px;
   width: 360px;
   max-width: 90vw;
@@ -17,7 +17,7 @@
   display: none;
 }
 
-/* Messages scrollable area */
+
 #chat-window {
   flex-grow: 1;
   overflow-y: auto;
@@ -30,7 +30,7 @@
   word-wrap: break-word;
 }
 
-/* Input area fixed at bottom */
+
 #chat-input-area {
   display: flex;
   align-items: center;
@@ -39,7 +39,7 @@
   border-top: 1px solid #ddd;
 }
 
-/* Input box styling */
+
 #user-input {
   flex: 1;
   border: 1px solid #ccc;
@@ -49,12 +49,12 @@
   outline: none;
 }
 
-/* Send button */
+
 #send-btn {
   margin-left: 8px;
   padding: 10px 16px;
   border: none;
-  background-color: #ebdfa3; /* soft gold */
+  background-color: #ebdfa3; 
   color: #333;
   border-radius: 5px;
   cursor: pointer;
@@ -66,19 +66,19 @@
   background-color: #d4c78f;
 }
 
-/* FIX: Force toggle outside chat container */
+
 #chat-toggle {
-  position: fixed !important; /* override any Wix nesting */
-  bottom: 20px !important; /* 20px from bottom of screen */
-  right: 20px !important; /* 20px from right side */
+  position: fixed !important; 
+  bottom: 20px !important; 
+  right: 20px !important; 
   width: 50px;
   height: 50px;
-  background-color: #ebdfa3; /* soft gold */
+  background-color: #ebdfa3; 
   color: #333;
   border-radius: 50%;
   font-size: 24px;
   cursor: pointer;
-  z-index: 10000 !important; /* always above chat container */
+  z-index: 10000 !important; 
   display: flex;
   align-items: center;
   justify-content: center;
@@ -91,7 +91,7 @@
   background-color: #d4c78f;
 }
 
-/* Message bubbles */
+
 .message {
   margin: 0;
   padding: 10px 14px;
@@ -106,7 +106,7 @@
   position: relative;
 }
 
-/* Bot messages - warm grey background */
+
 .message.bot {
   background: #867f7c;
   color: white;
@@ -114,7 +114,7 @@
   border-bottom-left-radius: 2px;
 }
 
-/* Bot message tail */
+
 .message.bot::after {
   content: "";
   position: absolute;
@@ -127,7 +127,7 @@
   border-bottom: 8px solid transparent;
 }
 
-/* User messages - soft gold background */
+
 .message.user {
   background: #ebdfa3;
   color: #333;
@@ -135,7 +135,7 @@
   border-bottom-right-radius: 2px;
 }
 
-/* User message tail */
+
 .message.user::after {
   content: "";
   position: absolute;
@@ -148,7 +148,7 @@
   border-bottom: 8px solid transparent;
 }
 
-/* Bot buttons inside messages */
+
 .message.bot button {
   background-color: #ebdfa3;
   color: #333;
