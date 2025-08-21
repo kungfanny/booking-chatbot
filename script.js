@@ -5,30 +5,30 @@ window.addEventListener("DOMContentLoaded", () => {
   const userInput = document.getElementById("user-input");
   const sendBtn = document.getElementById("send-btn");
 
-  // Start with chat hidden, toggle visible
+ 
   chatContainer.style.display = "none";
   chatToggle.style.display = "flex";
 
-  // Toggle chat open/close
+  
   chatToggle.addEventListener("click", () => {
     if (chatContainer.style.display === "flex") {
-      // Chat is open, so minimize it
+      
       chatContainer.style.display = "none";
     } else {
-      // Chat is closed, so open it
+      
       chatContainer.style.display = "flex";
       userInput.focus();
     }
   });
 
-  // EmailJS setup
-  const EMAILJS_SERVICE_ID = "service_j792hfh"; // Your actual service ID
-  const EMAILJS_TEMPLATE_ID = "template_rglszxa"; // Your actual template ID
-  const EMAILJS_PUBLIC_KEY = "3xzHlGmEjHmgV45am"; // Your actual public key
+  
+  const EMAILJS_SERVICE_ID = "service_j792hfh"; 
+  const EMAILJS_TEMPLATE_ID = "template_rglszxa"; 
+  const EMAILJS_PUBLIC_KEY = "3xzHlGmEjHmgV45am"; 
 
   emailjs.init(EMAILJS_PUBLIC_KEY);
 
-  // Chatbot state variables
+  
   let step = 0;
   let eventType = "";
   let answers = {
@@ -127,7 +127,7 @@ window.addEventListener("DOMContentLoaded", () => {
     ],
   };
 
-  // Helper: add bot message bubble
+  
   function botMessage(msg) {
     userInput.style.display = "block";
     sendBtn.style.display = "inline-block";
@@ -139,7 +139,7 @@ window.addEventListener("DOMContentLoaded", () => {
     chatWindow.scrollTop = chatWindow.scrollHeight;
   }
 
-  // Helper: add user message bubble
+  
   function userMessage(msg) {
     const el = document.createElement("div");
     el.classList.add("message", "user");
@@ -148,7 +148,7 @@ window.addEventListener("DOMContentLoaded", () => {
     chatWindow.scrollTop = chatWindow.scrollHeight;
   }
 
-  // Helper: add bot message bubble with buttons
+  
   function botMessageWithButtons(msg, buttons) {
     userInput.style.display = "none";
     sendBtn.style.display = "none";
@@ -169,12 +169,12 @@ window.addEventListener("DOMContentLoaded", () => {
       btn.style.border = "none";
       btn.style.cursor = "pointer";
       btn.style.fontWeight = "bold";
-      btn.style.backgroundColor = "#EBDFA3"; // your brand color
+      btn.style.backgroundColor = "#EBDFA3"; 
       btn.style.color = "#333";
 
       btn.addEventListener("click", () => {
         btnContainer.remove();
-        el.innerText = msg; // reset msg text (remove buttons)
+        el.innerText = msg; 
         userInput.style.display = "block";
         sendBtn.style.display = "inline-block";
 
@@ -189,16 +189,16 @@ window.addEventListener("DOMContentLoaded", () => {
     chatWindow.scrollTop = chatWindow.scrollHeight;
   }
 
-  // Conversation variables
+  
   let currentAddons = [];
   let addonIndex = 0;
 
-  // Ask current addon question helper
+  
   function askAddon() {
     botMessageWithButtons(currentAddons[addonIndex].question, ["Yes", "No"]);
   }
 
-  // Flow control
+  
   function nextStep(input) {
     input = input.trim();
     if (!input) return;
@@ -295,7 +295,7 @@ window.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Show booking summary
+  
   function showSummary() {
     let summary = `Here’s your booking request summary:\n\nEvent: ${eventType}\n`;
     if (answers.soundSystem.toLowerCase() === "yes")
@@ -318,7 +318,7 @@ window.addEventListener("DOMContentLoaded", () => {
     step = "summary";
   }
 
-  // Send booking email via EmailJS
+  
   function sendEmail() {
     console.log("sendEmail() called with:", answers);
 
@@ -365,7 +365,7 @@ window.addEventListener("DOMContentLoaded", () => {
       });
   }
 
-  // Handle send button click and Enter key
+  
   sendBtn.addEventListener("click", () => {
     const input = userInput.value.trim();
     if (!input) return;
@@ -380,7 +380,7 @@ window.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Start the conversation with event type buttons
+  
   botMessageWithButtons(
     "Hi! Are you planning an event with live music? What type of event is it? Or are you booking for your restaurant/bar?",
     ["Wedding", "Private Party", "Restaurant / Bar"]
